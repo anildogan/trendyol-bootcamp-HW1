@@ -95,38 +95,38 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
     }
 
     @Override
-    public boolean isEmailLimitExceeded(CompanyDTO from) {
-        return from.getEmailPackage().getCurrentLimit() <= 0 ;
+    public boolean isEmailLimitExceeded(CompanyDTO companyDTO) {
+        return companyDTO.getEmailPackage().getCurrentLimit() <= 0 ;
     }
 
     @Override
-    public boolean isSmsLimitExceeded(CompanyDTO from) {
-        return from.getSmsPackage().getCurrentLimit() <= 0 ;
+    public boolean isSmsLimitExceeded(CompanyDTO companyDTO) {
+        return companyDTO.getSmsPackage().getCurrentLimit() <= 0 ;
     }
 
     @Override
-    public void sendEmailWithExceededPackage(CompanyDTO from) throws CannotPayException {
+    public void sendEmailWithExceededPackage(CompanyDTO companyDTO) throws CannotPayException {
 
         System.out.println("Sending with exceeded account");
-        double newAmount = from.getMoney() - from.getEmailPackage().getExceedPrice();
+        double newAmount = companyDTO.getMoney() - companyDTO.getEmailPackage().getExceedPrice();
         if(newAmount < 0) {
-            String errorMessage = from.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
             throw new CannotPayException(errorMessage);
         }
-        from.setMoney( from.getMoney() - from.getEmailPackage().getExceedPrice());
-        System.out.println("New balance: " + from.getMoney());
+        companyDTO.setMoney( companyDTO.getMoney() - companyDTO.getEmailPackage().getExceedPrice());
+        System.out.println("New balance: " + companyDTO.getMoney());
     }
 
     @Override
-    public void sendSmsWithExceededPackage(CompanyDTO from) throws CannotPayException {
+    public void sendSmsWithExceededPackage(CompanyDTO companyDTO) throws CannotPayException {
         System.out.println("Sending with exceeded account");
-        double newAmount = from.getMoney() - from.getSmsPackage().getExceedPrice();
+        double newAmount = companyDTO.getMoney() - companyDTO.getSmsPackage().getExceedPrice();
         if(newAmount < 0) {
-            String errorMessage = from.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
             throw new CannotPayException(errorMessage);
         }
-        from.setMoney( from.getMoney() - from.getSmsPackage().getExceedPrice());
-        System.out.println("New balance: " + from.getMoney());
+        companyDTO.setMoney( companyDTO.getMoney() - companyDTO.getSmsPackage().getExceedPrice());
+        System.out.println("New balance: " + companyDTO.getMoney());
     }
     @Override
     public void isEmailExists(CompanyDTO companyDTO) throws NoPackageException {

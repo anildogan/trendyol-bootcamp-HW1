@@ -71,29 +71,29 @@ public class StablePackageService implements BaseStablePackageService{
     }
 
     @Override
-    public void refreshPackageEmail(CompanyDTO from) throws CannotPayException {
-        double newAmount = from.getMoney() - from.getEmailPackage().getExceedPrice();
+    public void refreshPackageEmail(CompanyDTO companyDTO) throws CannotPayException {
+        double newAmount = companyDTO.getMoney() - companyDTO.getEmailPackage().getExceedPrice();
         if(newAmount < 0) {
-            String errorMessage = from.getLanguage() == Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
             throw new CannotPayException(errorMessage);
         }
-        from.setMoney( newAmount);
-        from.getEmailPackage().setCurrentLimit(from.getEmailPackage().getLimit());
+        companyDTO.setMoney( newAmount);
+        companyDTO.getEmailPackage().setCurrentLimit(companyDTO.getEmailPackage().getLimit());
         System.out.println("Email package redefined");
-        System.out.println("New balance: " + from.getMoney());
+        System.out.println("New balance: " + companyDTO.getMoney());
     }
 
     @Override
-    public void refreshPackageSms(CompanyDTO from) throws CannotPayException {
-        double newAmount = from.getMoney() - from.getSmsPackage().getExceedPrice();
+    public void refreshPackageSms(CompanyDTO companyDTO) throws CannotPayException {
+        double newAmount = companyDTO.getMoney() - companyDTO.getSmsPackage().getExceedPrice();
         if(newAmount < 0) {
-            String errorMessage = from.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() ==Language.EN ? ErrorMessage.Money_Err_En.getMessage() : ErrorMessage.Money_Err_Tr.getMessage();
             throw new CannotPayException(errorMessage);
         }
-        from.setMoney( newAmount);
-        from.getSmsPackage().setCurrentLimit(from.getSmsPackage().getLimit());
+        companyDTO.setMoney( newAmount);
+        companyDTO.getSmsPackage().setCurrentLimit(companyDTO.getSmsPackage().getLimit());
         System.out.println("Sms package redefined");
-        System.out.println("New balance: " + from.getMoney());
+        System.out.println("New balance: " + companyDTO.getMoney());
 
     }
 
@@ -116,13 +116,13 @@ public class StablePackageService implements BaseStablePackageService{
     }
 
     @Override
-    public boolean isEmailLimitExceeded(CompanyDTO from) {
-        return from.getEmailPackage().getCurrentLimit() <= 0 ;
+    public boolean isEmailLimitExceeded(CompanyDTO companyDTO) {
+        return companyDTO.getEmailPackage().getCurrentLimit() <= 0 ;
     }
 
     @Override
-    public boolean isSmsLimitExceeded(CompanyDTO from) {
-        return from.getSmsPackage().getCurrentLimit() <= 0 ;
+    public boolean isSmsLimitExceeded(CompanyDTO companyDTO) {
+        return companyDTO.getSmsPackage().getCurrentLimit() <= 0 ;
     }
 
     @Override

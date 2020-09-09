@@ -21,11 +21,11 @@ public interface BaseFlexiblePackageService {
     void checkEmailBlacklisted(CompanyDTO companyDTO) throws BlacklistException;
     void checkSmsBlacklisted(CompanyDTO companyDTO) throws BlacklistException;
 
-    boolean isEmailLimitExceeded(CompanyDTO from);
-    boolean isSmsLimitExceeded(CompanyDTO from);
+    boolean isEmailLimitExceeded(CompanyDTO companyDTO);
+    boolean isSmsLimitExceeded(CompanyDTO companyDTO);
 
-    void sendEmailWithExceededPackage(CompanyDTO from) throws CannotPayException;
-    void sendSmsWithExceededPackage(CompanyDTO from) throws CannotPayException;
+    void sendEmailWithExceededPackage(CompanyDTO companyDTO) throws CannotPayException;
+    void sendSmsWithExceededPackage(CompanyDTO companyDTO) throws CannotPayException;
 
     void isEmailExists(CompanyDTO companyDTO) throws NoPackageException;
     void isSmsExists(CompanyDTO companyDTO) throws NoPackageException;

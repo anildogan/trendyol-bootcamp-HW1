@@ -18,14 +18,14 @@ public interface BaseStablePackageService {
     void setEmailBlacklisted(CompanyDTO companyDTO);
     void setSmsBlacklisted(CompanyDTO companyDTO);
 
-    void refreshPackageEmail(CompanyDTO from) throws CannotPayException;
-    void refreshPackageSms(CompanyDTO from) throws CannotPayException;
+    void refreshPackageEmail(CompanyDTO companyDTO) throws CannotPayException;
+    void refreshPackageSms(CompanyDTO companyDTO) throws CannotPayException;
 
     void checkEmailBlacklisted(CompanyDTO companyDTO) throws BlacklistException;
     void checkSmsBlacklisted(CompanyDTO companyDTO) throws BlacklistException;
 
-    boolean isEmailLimitExceeded(CompanyDTO from);
-    boolean isSmsLimitExceeded(CompanyDTO from);
+    boolean isEmailLimitExceeded(CompanyDTO companyDTO);
+    boolean isSmsLimitExceeded(CompanyDTO companyDTO);
 
     void isEmailExists(CompanyDTO companyDTO) throws NoPackageException;
     void isSmsExists(CompanyDTO companyDTO) throws NoPackageException;
