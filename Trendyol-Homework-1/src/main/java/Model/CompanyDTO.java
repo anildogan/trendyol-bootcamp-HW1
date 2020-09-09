@@ -47,7 +47,6 @@ public class CompanyDTO {
     }
 
     public void setSmsPackage(BasePackageSmsDTO smsPackage) {
-        setMoney(this.getMoney() - smsPackage.getPrice());
         this.smsPackage = smsPackage;
     }
 

@@ -27,8 +27,8 @@ public interface BaseFlexiblePackageService {
     void sendEmailWithExceededPackage(CompanyDTO from) throws CannotPayException;
     void sendSmsWithExceededPackage(CompanyDTO from) throws CannotPayException;
 
-    void isEmailExists(BasePackageEmailDTO basePackageEmailDTO) throws NoPackageException;
-    void isSmsExists(BasePackageSmsDTO basePackageSmsDTO) throws NoPackageException;
+    void isEmailExists(CompanyDTO companyDTO) throws NoPackageException;
+    void isSmsExists(CompanyDTO companyDTO) throws NoPackageException;
 
 
 

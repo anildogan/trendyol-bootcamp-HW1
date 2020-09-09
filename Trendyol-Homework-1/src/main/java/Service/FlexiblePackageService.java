@@ -17,7 +17,7 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
     public void sendEmail(CompanyDTO from, CompanyDTO to) {
         //Check if black listed and if 2 months exceeded blacklist
         try {
-            isEmailExists(from.getEmailPackage());
+            isEmailExists(from);
             checkEmailBlacklisted(from);
             if(isEmailLimitExceeded(from)){
                 sendEmailWithExceededPackage(from);
@@ -36,7 +36,7 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
     @Override
     public void sendSms(CompanyDTO from, CompanyDTO to) {
         try{
-            isSmsExists(from.getSmsPackage());
+            isSmsExists(from);
             checkSmsBlacklisted(from);
             if(isSmsLimitExceeded(from)) {
                 sendSmsWithExceededPackage(from);
@@ -80,7 +80,7 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
     public void checkEmailBlacklisted(CompanyDTO companyDTO) throws BlacklistException {
         if(isEmailBlacklistTimeExceeded(companyDTO) || companyDTO.getEmailPackage().isBlacklisted()){
             setEmailBlacklisted(companyDTO);
-            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Email_Blacklist_Err_En.getMessage():ErrorMessage.Email_Blacklist_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Blacklist_Err_En.getMessage():ErrorMessage.Blacklist_Err_Tr.getMessage();
             throw new BlacklistException(errorMessage);
         }
     }
@@ -89,7 +89,7 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
     public void checkSmsBlacklisted(CompanyDTO companyDTO) throws BlacklistException {
         if(isSmsBlacklistTimeExceeded(companyDTO) || companyDTO.getSmsPackage().isBlacklisted()){
             setSmsBlacklisted(companyDTO);
-            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Email_Blacklist_Err_En.getMessage():ErrorMessage.Email_Blacklist_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Blacklist_Err_En.getMessage():ErrorMessage.Blacklist_Err_Tr.getMessage();
             throw new BlacklistException(errorMessage);
         }
     }
@@ -129,16 +129,18 @@ public class FlexiblePackageService implements BaseFlexiblePackageService{
         System.out.println("New balance: " + from.getMoney());
     }
     @Override
-    public void isEmailExists(BasePackageEmailDTO basePackageEmailDTO) throws NoPackageException {
-        if(basePackageEmailDTO == null) {
-            throw new NoPackageException("No new package");
+    public void isEmailExists(CompanyDTO companyDTO) throws NoPackageException {
+        if(companyDTO.getEmailPackage() == null) {
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.No_Limit_En.getMessage():ErrorMessage.No_Limit_Tr.getMessage();
+            throw new NoPackageException(errorMessage);
         }
     }
 
     @Override
-    public void isSmsExists(BasePackageSmsDTO basePackageSmsDTO) throws NoPackageException {
-        if(basePackageSmsDTO == null) {
-            throw new NoPackageException("No new package");
+    public void isSmsExists(CompanyDTO companyDTO) throws NoPackageException {
+        if(companyDTO.getSmsPackage() == null) {
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.No_Limit_En.getMessage():ErrorMessage.No_Limit_Tr.getMessage();
+            throw new NoPackageException(errorMessage);
         }
     }
 }

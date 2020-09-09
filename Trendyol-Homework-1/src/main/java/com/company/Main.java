@@ -15,7 +15,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-        DateService dateService = new DateService();
         FlexiblePackageService flexiblePackageService = new FlexiblePackageService();
         StablePackageService stablePackageService = new StablePackageService();
         CompanyService companyService = new CompanyService();
@@ -26,38 +25,16 @@ public class Main {
 
         from.setMoney(100);
 
-        companyService.setSmsPackage(from, new SmsStableDTO());
-        companyService.setEmailPackage(from, new EmailFlexibleDTO());
+        companyService.setSmsPackage(from, new SmsStableDTO()); //20 unit cost
+        companyService.setEmailPackage(from, new EmailFlexibleDTO());//10 unit cost
 
-        System.out.println(from.getMoney());
-
-
-        for(int i = 0 ; i < 2; i ++) {
+        for(int i = 0 ; i < (from.getSmsPackage().getLimit() + 2); i ++) {
             stablePackageService.sendSms(from, to);
         }
 
-        for(int i = 0 ; i < 5; i ++) {
+        for(int i = 0 ; i < (from.getEmailPackage().getLimit() + 2); i ++) {
             flexiblePackageService.sendEmail(from, to);
         }
-
-        //FlexiblePackageService flexiblePackageService = new FlexiblePackageService();
-        //System.out.println(flexiblePackageService.isEmailBlacklisted(company1));
-        /*
-        *
-        * BasePackageDTO dto = new SmsFixedDTO();
-
-
-        BasePackageDTO[] base = new BasePackageDTO[2];
-
-        base[0] = new SmsFixedDTO();
-        base[1] = new EmailFixedDTO();
-
-        base[0].saySa();
-        base[1].saySa();
-        *
-        * */
-
-
 
     }
 }

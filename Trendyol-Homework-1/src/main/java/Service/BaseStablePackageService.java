@@ -27,8 +27,8 @@ public interface BaseStablePackageService {
     boolean isEmailLimitExceeded(CompanyDTO from);
     boolean isSmsLimitExceeded(CompanyDTO from);
 
-    void isEmailExists(BasePackageEmailDTO basePackageEmailDTO) throws NoPackageException;
-    void isSmsExists(BasePackageSmsDTO basePackageSmsDTO) throws NoPackageException;
+    void isEmailExists(CompanyDTO companyDTO) throws NoPackageException;
+    void isSmsExists(CompanyDTO companyDTO) throws NoPackageException;
 
 
 

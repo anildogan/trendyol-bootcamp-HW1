@@ -17,16 +17,14 @@ public class StablePackageService implements BaseStablePackageService{
     public void sendEmail(CompanyDTO from, CompanyDTO to) {
         //Check if black listed and if 2 months exceeded blacklist
         try {
-            isEmailExists(from.getEmailPackage());
+            isEmailExists(from);
             checkEmailBlacklisted(from);
             if(isEmailLimitExceeded(from)){
                 refreshPackageEmail(from);
             }
-            else {
                 System.out.println("Email sent successfully");
                 from.getEmailPackage().setCurrentLimit(from.getEmailPackage().getCurrentLimit() - 1);
                 System.out.println("New limit: " + from.getEmailPackage().getCurrentLimit());
-            }
         }catch (BlacklistException | CannotPayException | NoPackageException  e) {
             System.out.println(e);
         }
@@ -35,16 +33,15 @@ public class StablePackageService implements BaseStablePackageService{
     @Override
     public void sendSms(CompanyDTO from, CompanyDTO to) {
         try{
-            isSmsExists(from.getSmsPackage());
+            isSmsExists(from);
             checkSmsBlacklisted(from);
             if(isSmsLimitExceeded(from)) {
                 refreshPackageSms(from);
             }
-            else {
                 System.out.println("Sms sent successfully");
                 from.getSmsPackage().setCurrentLimit(from.getSmsPackage().getCurrentLimit() - 1);
                 System.out.println("New limit: " + from.getSmsPackage().getCurrentLimit());
-            }
+
         }catch (BlacklistException | CannotPayException | NoPackageException e) {
             System.out.println(e);
         }
@@ -82,6 +79,8 @@ public class StablePackageService implements BaseStablePackageService{
         }
         from.setMoney( newAmount);
         from.getEmailPackage().setCurrentLimit(from.getEmailPackage().getLimit());
+        System.out.println("Email package redefined");
+        System.out.println("New balance: " + from.getMoney());
     }
 
     @Override
@@ -93,13 +92,16 @@ public class StablePackageService implements BaseStablePackageService{
         }
         from.setMoney( newAmount);
         from.getSmsPackage().setCurrentLimit(from.getSmsPackage().getLimit());
+        System.out.println("Sms package redefined");
+        System.out.println("New balance: " + from.getMoney());
+
     }
 
     @Override
     public void checkEmailBlacklisted(CompanyDTO companyDTO) throws BlacklistException {
         if(isEmailBlacklistTimeExceeded(companyDTO) || companyDTO.getEmailPackage().isBlacklisted()){
             setEmailBlacklisted(companyDTO);
-            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Email_Blacklist_Err_En.getMessage():ErrorMessage.Email_Blacklist_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Blacklist_Err_En.getMessage():ErrorMessage.Blacklist_Err_Tr.getMessage();
             throw new BlacklistException(errorMessage);
         }
     }
@@ -108,7 +110,7 @@ public class StablePackageService implements BaseStablePackageService{
     public void checkSmsBlacklisted(CompanyDTO companyDTO) throws BlacklistException {
         if(isSmsBlacklistTimeExceeded(companyDTO) || companyDTO.getSmsPackage().isBlacklisted()){
             setSmsBlacklisted(companyDTO);
-            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Email_Blacklist_Err_En.getMessage():ErrorMessage.Email_Blacklist_Err_Tr.getMessage();
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.Blacklist_Err_En.getMessage():ErrorMessage.Blacklist_Err_Tr.getMessage();
             throw new BlacklistException(errorMessage);
         }
     }
@@ -124,16 +126,18 @@ public class StablePackageService implements BaseStablePackageService{
     }
 
     @Override
-    public void isEmailExists(BasePackageEmailDTO basePackageEmailDTO) throws NoPackageException {
-        if(basePackageEmailDTO == null) {
-            throw new NoPackageException("No new package");
+    public void isEmailExists(CompanyDTO companyDTO) throws NoPackageException {
+        if(companyDTO.getEmailPackage() == null) {
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.No_Limit_En.getMessage():ErrorMessage.No_Limit_Tr.getMessage();
+            throw new NoPackageException(errorMessage);
         }
     }
 
     @Override
-    public void isSmsExists(BasePackageSmsDTO basePackageSmsDTO) throws NoPackageException {
-        if(basePackageSmsDTO == null) {
-            throw new NoPackageException("No new package");
+    public void isSmsExists(CompanyDTO companyDTO) throws NoPackageException {
+        if(companyDTO.getSmsPackage() == null) {
+            String errorMessage = companyDTO.getLanguage() == Language.EN ? ErrorMessage.No_Limit_En.getMessage():ErrorMessage.No_Limit_Tr.getMessage();
+            throw new NoPackageException(errorMessage);
         }
     }
 }
